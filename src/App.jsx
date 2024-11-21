@@ -1,29 +1,40 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
 
-  [tasks, setTasks] = useState([]);
-  [task, setTask] = useState('');
+  const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState('');
 
   const handleChange = (e) => {
     setTask(e.target.value);
   }
 
+  const handleDelete = (index) => {
+    console.log('first')
+    const newTasks = [...tasks];
+    newTasks.splice(index,1);
+    setTasks(newTasks);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setTasks([...tasks, task]);
+    setTask('');
+  }
+
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
 
         <input type='text' value={task} onChange={handleChange} />
         <button onClick={handleSubmit}>Add</button>
 
       </form>
       <ul>
-        { tasks.map(todo => (
-          <li key={todo}>{todo}
-            <button onClick={handleDelete}>X</button>
+        { tasks.map((task,index) => (
+          <li key={index}>{task}
+            <button type='button' onClick={()=>handleDelete(index)}>X</button>
           </li>
         ))}
       </ul>
